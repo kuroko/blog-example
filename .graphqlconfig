@@ -1,0 +1,15 @@
+{
+  "name": "Kuroko: Consumption",
+  "schemaPath": "./schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Kuroko: Consumption": {
+        "url": "https://consumption.kurokocms.com/graphql",
+        "headers": {
+          "X-Kuroko-Project": "example-blog.2975"
+        },
+        "introspect": true
+      }
+    }
+  }
+}

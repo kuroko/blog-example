@@ -1,0 +1,14 @@
+overwrite: true
+schema:
+- "https://consumption.kurokocms.com/graphql":
+    headers:
+      "X-Kuroko-Project": "example-blog.2975"
+documents:
+- "graphql/**/*.{ts,tsx}"
+- "graphql/!**/*.generated.{ts,tsx}"
+generates:
+  generated/graphql.ts:
+    plugins:
+    - typescript
+    - typescript-operations
+    - typescript-graphql-request
