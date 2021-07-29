@@ -236,6 +236,23 @@ export type Tag = {
 export type PostFieldsFragment = (
   { __typename?: 'Post' }
   & Pick<Post, 'title'>
+  & { coverImage: (
+    { __typename?: 'K4oAsset' }
+    & Pick<K4oAsset, 'publicUrl'>
+  ), content: Array<Maybe<(
+    { __typename: 'Post_Content_MarkdownSection' }
+    & Pick<Post_Content_MarkdownSection, 'markdown'>
+  ) | (
+    { __typename: 'Post_Content_GallerySection' }
+    & { items: Array<Maybe<(
+      { __typename?: 'Post_Content_GallerySection_Items' }
+      & Pick<Post_Content_GallerySection_Items, 'caption'>
+      & { image: (
+        { __typename?: 'K4oAsset' }
+        & Pick<K4oAsset, 'publicUrl'>
+      ) }
+    )>> }
+  )>> }
 );
 
 export type GetPostByPathQueryVariables = Exact<{
@@ -247,22 +264,39 @@ export type GetPostByPathQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'title'>
+    & PostFieldsFragment
   )> }
 );
 
 export const PostFieldsFragmentDoc = gql`
     fragment PostFields on Post {
+  coverImage {
+    publicUrl
+  }
   title
+  content {
+    __typename
+    ... on Post_Content_MarkdownSection {
+      markdown
+    }
+    ... on Post_Content_GallerySection {
+      items {
+        image {
+          publicUrl
+        }
+        caption
+      }
+    }
+  }
 }
     `;
 export const GetPostByPathDocument = gql`
     query getPostByPath($path: String!) {
   post(path: $path) {
-    title
+    ...PostFields
   }
 }
-    `;
+    ${PostFieldsFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 

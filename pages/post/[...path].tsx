@@ -1,7 +1,9 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image"
 
 import { graphqlClient } from "constants/graphqlClient";
 import { getSdk, PostFieldsFragment } from "generated/graphql";
+import { Content } from "./components/Content";
 
 export type PostQuery = {
     path: string[]
@@ -12,7 +14,13 @@ export type PostProps = {
 }
 
 const Post = (props: PostProps) => {
-    return <pre>Post Title: {props.post?.title}</pre>
+    return (
+        <div>
+            <Image width={600} height={337} src={props.post.coverImage.publicUrl} alt={props.post.title} />
+            <h1>{props.post.title}</h1>
+            <Content content={props.post.content}/>
+        </div>
+    )
 }
 
 export const getServerSideProps: GetServerSideProps<PostProps, PostQuery> = async (context) => {
