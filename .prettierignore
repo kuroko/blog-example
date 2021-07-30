@@ -1,0 +1,5 @@
+.next/
+node_modules/
+
+# Any file or directory with the word generated in
+*generated*
