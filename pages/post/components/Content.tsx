@@ -1,13 +1,9 @@
 import React from "react"
 
-import {
-  Post_Content_GallerySection,
-  Post_Content_MarkdownSection,
-  PostFieldsFragment,
-} from "generated/graphql"
+import { Post_Content_GallerySection, Post_Content_MarkdownSection, PostFieldsFragment } from "generated/graphql"
 
-import { GallerySection } from "./GallerySection"
-import { MarkdownSection } from "./MarkdownSection"
+import { GallerySection } from "pages/post/components/GallerySection"
+import { MarkdownSection } from "pages/post/components/MarkdownSection"
 
 export type ContentProps = {
   content: PostFieldsFragment["content"]

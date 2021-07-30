@@ -3,8 +3,7 @@ import Image from "next/image"
 
 import { graphqlClient } from "constants/graphqlClient"
 import { getSdk, PostFieldsFragment } from "generated/graphql"
-import { Content } from "./components/Content"
-import { Footer } from "../../components/Footer"
+import { Content } from "pages/post/components/Content"
 
 export type PostQuery = {
   path: string[]
@@ -14,7 +13,7 @@ export type PostProps = {
   post: PostFieldsFragment
 }
 
-const Post = (props: PostProps) => {
+export default function Post(props: PostProps) {
   return (
     <div>
       <Image
@@ -43,5 +42,3 @@ export const getServerSideProps: GetServerSideProps<PostProps, PostQuery> = asyn
     },
   }
 }
-
-export default Post
