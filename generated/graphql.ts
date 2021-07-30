@@ -245,7 +245,20 @@ export type Tag = {
 export type PostFieldsFragment = (
   { __typename?: 'Post' }
   & Pick<Post, 'title'>
-  & { coverImage: (
+  & { _metadata?: Maybe<(
+    { __typename?: 'K4oEntryMetadata' }
+    & Pick<K4oEntryMetadata, 'createdAt' | 'updatedAt'>
+  )>, category: (
+    { __typename?: 'Category' }
+    & Pick<Category, 'title'>
+    & { _metadata?: Maybe<(
+      { __typename?: 'K4oEntryMetadata' }
+      & Pick<K4oEntryMetadata, 'path'>
+    )> }
+  ), authors: Array<Maybe<(
+    { __typename?: 'Person' }
+    & Pick<Person, 'firstName' | 'lastName'>
+  )>>, coverImage: (
     { __typename?: 'K4oAsset' }
     & Pick<K4oAsset, 'publicUrl'>
     & { metadata?: Maybe<(
@@ -287,6 +300,25 @@ export type GetPostByPathQuery = (
 
 export const PostFieldsFragmentDoc = gql`
     fragment PostFields on Post {
+  _metadata {
+    createdAt
+    updatedAt
+  }
+  title
+  category {
+    ... on Category {
+      _metadata {
+        path
+      }
+      title
+    }
+  }
+  authors {
+    ... on Person {
+      firstName
+      lastName
+    }
+  }
   coverImage {
     publicUrl
     metadata {
@@ -296,7 +328,6 @@ export const PostFieldsFragmentDoc = gql`
       }
     }
   }
-  title
   content {
     __typename
     ... on Post_Content_MarkdownSection {

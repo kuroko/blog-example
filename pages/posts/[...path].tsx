@@ -1,9 +1,10 @@
 import { GetServerSideProps } from "next"
-import Image from "next/image"
+import Head from "next/head"
 
 import { graphqlClient } from "constants/graphqlClient"
 import { getSdk, PostFieldsFragment } from "generated/graphql"
-import { Content } from "pages/post/components/Content"
+import { PostContent } from "components/PostContent"
+import { PostHeader } from "components/PostHeader"
 
 export type PostQuery = {
   path: string[]
@@ -16,15 +17,12 @@ export type PostProps = {
 export default function Post(props: PostProps) {
   return (
     <div>
-      <Image
-        layout="responsive"
-        width={props.post.coverImage.metadata?.width || 0}
-        height={props.post.coverImage.metadata?.height || 0}
-        src={props.post.coverImage.publicUrl}
-        alt={props.post.title}
-      />
-      <h1>{props.post.title}</h1>
-      <Content content={props.post.content} />
+      <Head>
+        <title>{props.post.title} &bull; Blog Example</title>
+      </Head>
+
+      <PostHeader post={props.post} />
+      <PostContent content={props.post.content} />
     </div>
   )
 }

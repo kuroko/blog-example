@@ -1,10 +1,14 @@
 import React from "react"
-import styled from "styled-components"
 
-const Container = styled.div`
-  background-color: lightgray;
-`
+import { Container, Copyright, Wrapper } from "components/Footer/styles"
 
+// TODO: Grab data from some config?
 export const Footer = () => {
-  return <Container>Hello</Container>
+  return <Container>
+    <Wrapper>
+      <Copyright>
+        &copy; {new Date().getFullYear()}, <em>Kuroko LTD</em>
+      </Copyright>
+    </Wrapper>
+  </Container>
 }

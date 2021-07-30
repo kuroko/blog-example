@@ -1,7 +1,27 @@
-import Document, { DocumentContext } from "next/document"
+import React from "react"
+import Document, { DocumentContext, Head, Html, Main, NextScript } from "next/document"
 import { ServerStyleSheet } from "styled-components"
 
 export default class BlogDocument extends Document {
+  render() {
+    return (
+      <Html>
+        <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://use.typekit.net" />
+
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" />
+          <link rel="stylesheet" href="https://use.typekit.net/rwc4xuh.css" />
+        </Head>
+        <body>
+        <Main />
+        <NextScript />
+        </body>
+      </Html>
+    )
+  }
+
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
