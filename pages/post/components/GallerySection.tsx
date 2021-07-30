@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 
-import { Post_Content_GallerySection } from "../../../generated/graphql"
+import { Post_Content_GallerySection } from "generated/graphql"
 
 export type GallerySectionProps = {
   content: Post_Content_GallerySection
@@ -13,8 +13,8 @@ export const GallerySection = (props: GallerySectionProps) => {
       {props.content.items.map((item, i) => (
         <Image
           key={i}
-          width="600"
-          height="239"
+          width={item?.image.metadata?.width || 0}
+          height={item?.image.metadata?.height || 0}
           src={item?.image.publicUrl || ""}
           alt={item?.caption}
         />

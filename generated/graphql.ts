@@ -55,10 +55,19 @@ export type K4oAsset = {
   name: Scalars['String'];
   filePath: Scalars['String'];
   mimeType: Scalars['String'];
+  metadata?: Maybe<K4oAssetMetadata>;
   publicUrl: Scalars['String'];
   createdAt: Scalars['Date'];
   updatedAt: Scalars['Date'];
 };
+
+export type K4oAssetImageMetadata = {
+  __typename?: 'K4oAssetImageMetadata';
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+};
+
+export type K4oAssetMetadata = K4oAssetImageMetadata;
 
 export type K4oEntriesFilters = {
   entryUuid?: Maybe<K4oUuidFilters>;
@@ -239,6 +248,10 @@ export type PostFieldsFragment = (
   & { coverImage: (
     { __typename?: 'K4oAsset' }
     & Pick<K4oAsset, 'publicUrl'>
+    & { metadata?: Maybe<(
+      { __typename?: 'K4oAssetImageMetadata' }
+      & Pick<K4oAssetImageMetadata, 'width' | 'height'>
+    )> }
   ), content: Array<Maybe<(
     { __typename: 'Post_Content_MarkdownSection' }
     & Pick<Post_Content_MarkdownSection, 'markdown'>
@@ -250,6 +263,10 @@ export type PostFieldsFragment = (
       & { image: (
         { __typename?: 'K4oAsset' }
         & Pick<K4oAsset, 'publicUrl'>
+        & { metadata?: Maybe<(
+          { __typename?: 'K4oAssetImageMetadata' }
+          & Pick<K4oAssetImageMetadata, 'width' | 'height'>
+        )> }
       ) }
     )>> }
   )>> }
@@ -272,6 +289,12 @@ export const PostFieldsFragmentDoc = gql`
     fragment PostFields on Post {
   coverImage {
     publicUrl
+    metadata {
+      ... on K4oAssetImageMetadata {
+        width
+        height
+      }
+    }
   }
   title
   content {
@@ -283,6 +306,12 @@ export const PostFieldsFragmentDoc = gql`
       items {
         image {
           publicUrl
+          metadata {
+            ... on K4oAssetImageMetadata {
+              width
+              height
+            }
+          }
         }
         caption
       }

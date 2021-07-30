@@ -8,6 +8,8 @@ union Entry = Category | Homepage | Person | Post | Tag
 
 union Homepage_Parts = Homepage_Parts_PostsListSection | Homepage_Parts_TextSection
 
+union K4oAssetMetadata = K4oAssetImageMetadata
+
 union Post_Authors = Person
 
 union Post_Category = Category
@@ -43,11 +45,17 @@ type K4oAsset {
     assetUuid: UUID!
     createdAt: Date!
     filePath: String!
+    metadata: K4oAssetMetadata
     mimeType: String!
     name: String!
     path: String!
     publicUrl: String!
     updatedAt: Date!
+}
+
+type K4oAssetImageMetadata {
+    height: Int!
+    width: Int!
 }
 
 type K4oEntryMetadata {

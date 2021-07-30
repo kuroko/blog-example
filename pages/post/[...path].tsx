@@ -17,8 +17,9 @@ export default function Post(props: PostProps) {
   return (
     <div>
       <Image
-        width={600}
-        height={337}
+        layout="responsive"
+        width={props.post.coverImage.metadata?.width || 0}
+        height={props.post.coverImage.metadata?.height || 0}
         src={props.post.coverImage.publicUrl}
         alt={props.post.title}
       />

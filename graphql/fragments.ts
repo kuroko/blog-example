@@ -4,6 +4,12 @@ export const postFieldsFragment = gql`
   fragment PostFields on Post {
     coverImage {
       publicUrl
+      metadata {
+        ...on K4oAssetImageMetadata {
+          width
+          height
+        }
+      }
     }
     title
     content {
@@ -15,6 +21,12 @@ export const postFieldsFragment = gql`
         items {
           image {
             publicUrl
+            metadata {
+              ...on K4oAssetImageMetadata {
+                width
+                height
+              }
+            }
           }
           caption
         }
