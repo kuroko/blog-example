@@ -193,7 +193,7 @@ export const Wrapper = styled.div`
 `
 
 export const Carousel = styled.div`
-  padding: 50px 0;
+  padding: 30px 0;
   
   .swiper-pagination-bullet {
     background: ${props => props.theme.clrForegroundL4};
