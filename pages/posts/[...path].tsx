@@ -14,7 +14,7 @@ export type PostProps = {
   post: PostPagePostFragment
 }
 
-export default async function Post(props: PostProps) {
+export default function Post(props: PostProps) {
   return (
     <div>
       <Head>
