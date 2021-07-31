@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react"
 import Image from "next/image"
 
 import { Post_Content_GallerySection } from "generated/graphql"
-import { GalleryCaption, GalleryImage } from "components/PostContent/styles"
+import { GalleryImage } from "components/PostContent/styles"
 
 export type GallerySectionProps = {
   content: Post_Content_GallerySection
