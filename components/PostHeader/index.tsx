@@ -48,10 +48,10 @@ export const PostHeader = ({ post }: PostHeaderProps) => {
             <MetaItem>
               Written by&nbsp;
               {post.authors.map((author, i) => (
-                <span key={i}>
+                <a key={i} href={author?._metadata?.path || ""}>
                   {author?.firstName} {author?.lastName}
                   {i < post.authors.length - 1 && ", "}
-                </span>
+                </a>
               ))}
             </MetaItem>
           )}

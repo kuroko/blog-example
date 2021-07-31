@@ -47,6 +47,9 @@ export const postPagePostFragment = gql`
 
     authors {
       ...on Person {
+        _metadata {
+          path
+        }
         firstName
         lastName
       }

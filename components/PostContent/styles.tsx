@@ -1,4 +1,4 @@
-import { desktop, paragraph, styled, tabletUp } from "styles"
+import { desktop, paragraph, styled, subdued, tabletUp } from "styles"
 
 export const Container = styled.div`
   background: white;
@@ -190,4 +190,19 @@ export const Wrapper = styled.div`
   }
 
   // TODO: More https://github.com/seeruk/elliotdwright.com/blob/master/src/scss/components/PostContent.module.scss
+`
+
+export const GalleryImage = styled.div`
+  text-align: center;
+  
+  img {
+    width: 100%;
+    height: auto;
+  }
+`
+
+export const GalleryCaption = styled.p`
+  ${subdued};
+  color: ${props => props.theme.clrForegroundL2};
+  text-align: center; 
 `

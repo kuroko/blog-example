@@ -302,6 +302,31 @@ export type HomepageContentQuery = (
   ) | { __typename?: 'Tag' }> }
 );
 
+export type PersonPagePersonFragment = (
+  { __typename?: 'Person' }
+  & Pick<Person, 'firstName' | 'lastName' | 'bio'>
+  & { _metadata?: Maybe<(
+    { __typename?: 'K4oEntryMetadata' }
+    & Pick<K4oEntryMetadata, 'path'>
+  )> }
+);
+
+export type PersonPagePersonQueryVariables = Exact<{
+  path: Scalars['String'];
+}>;
+
+
+export type PersonPagePersonQuery = (
+  { __typename?: 'Query' }
+  & { person?: Maybe<(
+    { __typename?: 'Person' }
+    & PersonPagePersonFragment
+  )>, posts: Array<{ __typename?: 'Category' } | { __typename?: 'Homepage' } | { __typename?: 'Person' } | (
+    { __typename?: 'Post' }
+    & PostListFieldsFragment
+  ) | { __typename?: 'Tag' }> }
+);
+
 export type PostContentFragment = (
   { __typename?: 'Post' }
   & { content: Array<Maybe<(
@@ -340,6 +365,10 @@ export type PostPagePostFragment = (
   ), authors: Array<Maybe<(
     { __typename?: 'Person' }
     & Pick<Person, 'firstName' | 'lastName'>
+    & { _metadata?: Maybe<(
+      { __typename?: 'K4oEntryMetadata' }
+      & Pick<K4oEntryMetadata, 'path'>
+    )> }
   )>>, coverImage: (
     { __typename?: 'K4oAsset' }
     & Pick<K4oAsset, 'publicUrl'>
@@ -396,6 +425,16 @@ export const HomepagePartsFragmentDoc = gql`
   }
 }
     `;
+export const PersonPagePersonFragmentDoc = gql`
+    fragment PersonPagePerson on Person {
+  _metadata {
+    path
+  }
+  firstName
+  lastName
+  bio
+}
+    `;
 export const PostContentFragmentDoc = gql`
     fragment PostContent on Post {
   content {
@@ -437,6 +476,9 @@ export const PostPagePostFragmentDoc = gql`
   }
   authors {
     ... on Person {
+      _metadata {
+        path
+      }
       firstName
       lastName
     }
@@ -490,6 +532,24 @@ export const HomepageContentDocument = gql`
 }
     ${HomepagePartsFragmentDoc}
 ${PostListFieldsFragmentDoc}`;
+export const PersonPagePersonDocument = gql`
+    query personPagePerson($path: String!) {
+  person(path: $path) {
+    ...PersonPagePerson
+  }
+  posts: entries(
+    filters: {contentType: {eq: "post"}, relations: {contains: {field: "authors", path: $path}}}
+    orderBy: [{field: CREATED_AT, direction: DESC}]
+    limit: 100
+    offset: 0
+  ) {
+    ... on Post {
+      ...PostListFields
+    }
+  }
+}
+    ${PersonPagePersonFragmentDoc}
+${PostListFieldsFragmentDoc}`;
 export const PostPageContentDocument = gql`
     query postPageContent($path: String!) {
   post(path: $path) {
@@ -510,6 +570,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     homepageContent(variables?: HomepageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<HomepageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<HomepageContentQuery>(HomepageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'homepageContent');
+    },
+    personPagePerson(variables: PersonPagePersonQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PersonPagePersonQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PersonPagePersonQuery>(PersonPagePersonDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'personPagePerson');
     },
     postPageContent(variables: PostPageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PostPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PostPageContentQuery>(PostPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'postPageContent');
