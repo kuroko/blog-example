@@ -1,5 +1,3 @@
-import baseStyled, { ThemedStyledInterface } from "styled-components"
-
 export const theme = {
   // Colours
   clrPrimaryL1: "#8C9EFF",
@@ -43,7 +41,3 @@ export const theme = {
   sizeInitial: 9,
   sizeBase: 10,
 }
-
-export type Theme = typeof theme
-
-export const styled = baseStyled as ThemedStyledInterface<Theme>

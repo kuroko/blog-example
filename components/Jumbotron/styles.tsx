@@ -1,4 +1,5 @@
-import { desktop, phabletUp, styled, tabletUp } from "styles"
+import styled from "styled-components"
+import { desktop, phabletUp, tabletUp } from "styles"
 import { css } from "styled-components"
 
 export type ContainerProps = {

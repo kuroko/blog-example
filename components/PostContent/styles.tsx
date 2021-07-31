@@ -1,4 +1,5 @@
-import { desktop, paragraph, styled, subdued, tabletUp } from "styles"
+import styled from "styled-components"
+import { desktop, paragraph, tabletUp } from "styles"
 
 export const Container = styled.div`
   background: white;

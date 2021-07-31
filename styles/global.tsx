@@ -1,8 +1,7 @@
 import { createGlobalStyle } from "styled-components"
 import { link, tabletUp } from "styles/mixins"
-import { Theme } from "styles/theme"
 
-export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
+export const GlobalStyles = createGlobalStyle`
   * {
     box-sizing: border-box;
   }

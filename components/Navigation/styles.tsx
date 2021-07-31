@@ -1,4 +1,5 @@
-import { desktop, styled, tabletUp } from "styles"
+import styled from "styled-components"
+import { desktop, tabletUp } from "styles"
 
 export const Container = styled.div`
   background: ${props => props.theme.clrBackgroundA1};

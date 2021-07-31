@@ -1,4 +1,5 @@
-import { clearfix, phabletUp, styled, tabletUp } from "styles"
+import styled from "styled-components"
+import { clearfix, phabletUp, tabletUp } from "styles"
 
 export const Item = styled.article`
   ${clearfix};

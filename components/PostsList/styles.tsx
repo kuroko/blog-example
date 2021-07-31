@@ -1,5 +1,7 @@
+import styled from "styled-components"
+
 import { Item } from "components/PostsListItem/styles"
-import { desktop, link, styled, tabletUp } from "styles"
+import { desktop, link, tabletUp } from "styles"
 
 export const Container = styled.section`
   max-width: 66rem;

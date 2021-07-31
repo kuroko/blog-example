@@ -1,4 +1,5 @@
-import { clearfix, desktop, phabletUp, postTabletUp, styled, tabletUp } from "styles"
+import styled from "styled-components"
+import { clearfix, desktop, phabletUp, postTabletUp, tabletUp } from "styles"
 
 export const Container = styled.header`
   position: relative;
