@@ -170,12 +170,18 @@ export type Post_Authors = Person;
 
 export type Post_Category = Category;
 
-export type Post_Content = Post_Content_MarkdownSection | Post_Content_GallerySection;
+export type Post_Content = Post_Content_MarkdownSection | Post_Content_GallerySection | Post_Content_InstagramEmbed;
 
 export type Post_Content_GallerySection = {
   __typename?: 'Post_Content_GallerySection';
   _metadata?: Maybe<K4oEntryMetadata>;
   images: Array<Maybe<K4oAsset>>;
+};
+
+export type Post_Content_InstagramEmbed = {
+  __typename?: 'Post_Content_InstagramEmbed';
+  _metadata?: Maybe<K4oEntryMetadata>;
+  url: Scalars['String'];
 };
 
 export type Post_Content_MarkdownSection = {
@@ -336,6 +342,9 @@ export type PostContentFragment = (
         & Pick<K4oAssetImageMetadata, 'width' | 'height'>
       )> }
     )>> }
+  ) | (
+    { __typename: 'Post_Content_InstagramEmbed' }
+    & Pick<Post_Content_InstagramEmbed, 'url'>
   )>> }
 );
 
@@ -429,9 +438,6 @@ export const PostContentFragmentDoc = gql`
     fragment PostContent on Post {
   content {
     __typename
-    ... on Post_Content_MarkdownSection {
-      markdown
-    }
     ... on Post_Content_GallerySection {
       images {
         publicUrl
@@ -442,6 +448,12 @@ export const PostContentFragmentDoc = gql`
           }
         }
       }
+    }
+    ... on Post_Content_InstagramEmbed {
+      url
+    }
+    ... on Post_Content_MarkdownSection {
+      markdown
     }
   }
 }

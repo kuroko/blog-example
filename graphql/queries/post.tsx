@@ -4,10 +4,6 @@ export const postContentFragment = gql`
   fragment PostContent on Post {
     content {
       __typename
-
-      ... on Post_Content_MarkdownSection {
-        markdown
-      }
       
       ... on Post_Content_GallerySection {
         images {
@@ -19,6 +15,14 @@ export const postContentFragment = gql`
             }
           }
         }
+      }
+      
+      ... on Post_Content_InstagramEmbed {
+        url
+      }
+
+      ... on Post_Content_MarkdownSection {
+        markdown
       }
     }
   }

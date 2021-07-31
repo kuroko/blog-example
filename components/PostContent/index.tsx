@@ -2,7 +2,7 @@ import React from "react"
 
 import {
   Maybe,
-  Post_Content_GallerySection,
+  Post_Content_GallerySection, Post_Content_InstagramEmbed,
   Post_Content_MarkdownSection,
   PostContentFragment,
 } from "generated/graphql"
@@ -10,6 +10,7 @@ import {
 import { GallerySection } from "components/PostContent/GallerySection"
 import { MarkdownSection } from "components/PostContent/MarkdownSection"
 import { Container, Wrapper } from "components/PostContent/styles"
+import { InstagramEmbed } from "components/PostContent/InstagramEmbed"
 
 export type PostContentProps = {
   content?: Maybe<PostContentFragment["content"]>
@@ -23,6 +24,9 @@ export const PostContent = ({ content }: PostContentProps) => {
           switch (item?.__typename) {
             case "Post_Content_GallerySection":
               return <GallerySection key={i} content={item as Post_Content_GallerySection} />
+            case "Post_Content_InstagramEmbed":
+              const instagramItem = item as Post_Content_InstagramEmbed
+              return <InstagramEmbed key={i} url={instagramItem.url} />
             case "Post_Content_MarkdownSection":
               return <MarkdownSection key={i} content={item as Post_Content_MarkdownSection} />
             default:

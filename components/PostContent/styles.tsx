@@ -240,11 +240,14 @@ export const CarouselSlide = styled.div`
   }
 `
 
-export const GalleryImage = styled.div`
-  text-align: center;
+export const InstagramEmbedContainer = styled.div`
+  align-content: center;
+  justify-content: center;
+  display: flex;
+  padding: 30px 0;
   
-  img {
+  > div {
     width: 100%;
-    height: auto;
+    max-width: 500px;
   }
 `

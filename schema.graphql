@@ -14,7 +14,7 @@ union Post_Authors = Person
 
 union Post_Category = Category
 
-union Post_Content = Post_Content_GallerySection | Post_Content_MarkdownSection
+union Post_Content = Post_Content_GallerySection | Post_Content_InstagramEmbed | Post_Content_MarkdownSection
 
 union Post_Tags = Tag
 
@@ -87,6 +87,11 @@ type Post {
 type Post_Content_GallerySection {
   _metadata: K4oEntryMetadata
   images: [K4oAsset]!
+}
+
+type Post_Content_InstagramEmbed {
+  _metadata: K4oEntryMetadata
+  url: String!
 }
 
 type Post_Content_MarkdownSection {
