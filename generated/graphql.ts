@@ -158,9 +158,9 @@ export type Person = {
 export type Post = {
   __typename?: 'Post';
   _metadata?: Maybe<K4oEntryMetadata>;
-  coverImage: K4oAsset;
+  coverImage?: Maybe<K4oAsset>;
   title: Scalars['String'];
-  category: Post_Category;
+  category?: Maybe<Post_Category>;
   authors: Array<Maybe<Post_Authors>>;
   content: Array<Maybe<Post_Content>>;
   tags: Array<Maybe<Post_Tags>>;
@@ -175,13 +175,7 @@ export type Post_Content = Post_Content_MarkdownSection | Post_Content_GallerySe
 export type Post_Content_GallerySection = {
   __typename?: 'Post_Content_GallerySection';
   _metadata?: Maybe<K4oEntryMetadata>;
-  items: Array<Maybe<Post_Content_GallerySection_Items>>;
-};
-
-export type Post_Content_GallerySection_Items = {
-  __typename?: 'Post_Content_GallerySection_Items';
-  image: K4oAsset;
-  caption: Scalars['String'];
+  images: Array<Maybe<K4oAsset>>;
 };
 
 export type Post_Content_MarkdownSection = {
@@ -334,17 +328,13 @@ export type PostContentFragment = (
     & Pick<Post_Content_MarkdownSection, 'markdown'>
   ) | (
     { __typename: 'Post_Content_GallerySection' }
-    & { items: Array<Maybe<(
-      { __typename?: 'Post_Content_GallerySection_Items' }
-      & Pick<Post_Content_GallerySection_Items, 'caption'>
-      & { image: (
-        { __typename?: 'K4oAsset' }
-        & Pick<K4oAsset, 'publicUrl'>
-        & { metadata?: Maybe<(
-          { __typename?: 'K4oAssetImageMetadata' }
-          & Pick<K4oAssetImageMetadata, 'width' | 'height'>
-        )> }
-      ) }
+    & { images: Array<Maybe<(
+      { __typename?: 'K4oAsset' }
+      & Pick<K4oAsset, 'publicUrl'>
+      & { metadata?: Maybe<(
+        { __typename?: 'K4oAssetImageMetadata' }
+        & Pick<K4oAssetImageMetadata, 'width' | 'height'>
+      )> }
     )>> }
   )>> }
 );
@@ -355,28 +345,28 @@ export type PostPagePostFragment = (
   & { _metadata?: Maybe<(
     { __typename?: 'K4oEntryMetadata' }
     & Pick<K4oEntryMetadata, 'createdAt' | 'updatedAt'>
-  )>, category: (
+  )>, category?: Maybe<(
     { __typename?: 'Category' }
     & Pick<Category, 'title'>
     & { _metadata?: Maybe<(
       { __typename?: 'K4oEntryMetadata' }
       & Pick<K4oEntryMetadata, 'path'>
     )> }
-  ), authors: Array<Maybe<(
+  )>, authors: Array<Maybe<(
     { __typename?: 'Person' }
     & Pick<Person, 'firstName' | 'lastName'>
     & { _metadata?: Maybe<(
       { __typename?: 'K4oEntryMetadata' }
       & Pick<K4oEntryMetadata, 'path'>
     )> }
-  )>>, coverImage: (
+  )>>, coverImage?: Maybe<(
     { __typename?: 'K4oAsset' }
     & Pick<K4oAsset, 'publicUrl'>
     & { metadata?: Maybe<(
       { __typename?: 'K4oAssetImageMetadata' }
       & Pick<K4oAssetImageMetadata, 'width' | 'height'>
     )> }
-  ) }
+  )> }
   & PostContentFragment
 );
 
@@ -443,17 +433,14 @@ export const PostContentFragmentDoc = gql`
       markdown
     }
     ... on Post_Content_GallerySection {
-      items {
-        image {
-          publicUrl
-          metadata {
-            ... on K4oAssetImageMetadata {
-              width
-              height
-            }
+      images {
+        publicUrl
+        metadata {
+          ... on K4oAssetImageMetadata {
+            width
+            height
           }
         }
-        caption
       }
     }
   }

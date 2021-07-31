@@ -19,9 +19,9 @@ export const GallerySection = ({ content }: GallerySectionProps) => {
     setIndex(index => index + 1)
   }, [setIndex])
 
-  const image = content.items[index]
+  const image = content.images[index]
 
-  if (!content.items.length || !image) {
+  if (!content.images.length || !image) {
     return <></>
   }
 
@@ -29,16 +29,14 @@ export const GallerySection = ({ content }: GallerySectionProps) => {
     <div style={{ position: "relative" }}>
       <GalleryImage>
         <Image
-          width={image.image.metadata?.width || 0}
-          height={image.image.metadata?.height || 0}
-          src={image.image.publicUrl || ""}
-          alt={image.caption}
+          width={image.metadata?.width || 0}
+          height={image.metadata?.height || 0}
+          src={image.publicUrl || ""}
+          alt={image.name}
         />
       </GalleryImage>
-
-      <GalleryCaption>
-        <em>{image.caption}</em>
-      </GalleryCaption>
+      <button onClick={onPrev}>Prev</button>
+      <button onClick={onNext}>Next</button>
     </div>
   )
 }

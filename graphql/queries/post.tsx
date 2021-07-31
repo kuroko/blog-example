@@ -10,17 +10,14 @@ export const postContentFragment = gql`
       }
       
       ... on Post_Content_GallerySection {
-        items {
-          image {
-            publicUrl
-            metadata {
-              ...on K4oAssetImageMetadata {
-                width
-                height
-              }
+        images {
+          publicUrl
+          metadata {
+            ...on K4oAssetImageMetadata {
+              width
+              height
             }
           }
-          caption
         }
       }
     }

@@ -200,9 +200,3 @@ export const GalleryImage = styled.div`
     height: auto;
   }
 `
-
-export const GalleryCaption = styled.p`
-  ${subdued};
-  color: ${props => props.theme.clrForegroundL2};
-  text-align: center; 
-`

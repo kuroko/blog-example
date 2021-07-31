@@ -77,21 +77,16 @@ type Person {
 type Post {
   _metadata: K4oEntryMetadata
   authors: [Post_Authors]!
-  category: Post_Category!
+  category: Post_Category
   content: [Post_Content]!
-  coverImage: K4oAsset!
+  coverImage: K4oAsset
   tags: [Post_Tags]!
   title: String!
 }
 
 type Post_Content_GallerySection {
   _metadata: K4oEntryMetadata
-  items: [Post_Content_GallerySection_Items]!
-}
-
-type Post_Content_GallerySection_Items {
-  caption: String!
-  image: K4oAsset!
+  images: [K4oAsset]!
 }
 
 type Post_Content_MarkdownSection {
