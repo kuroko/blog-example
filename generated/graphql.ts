@@ -251,6 +251,31 @@ export type PostListFieldsFragment = (
   )> }
 );
 
+export type CategoryPageCategoryFragment = (
+  { __typename?: 'Category' }
+  & Pick<Category, 'title' | 'description'>
+  & { _metadata?: Maybe<(
+    { __typename?: 'K4oEntryMetadata' }
+    & Pick<K4oEntryMetadata, 'path'>
+  )> }
+);
+
+export type CategoryPageContentQueryVariables = Exact<{
+  path: Scalars['String'];
+}>;
+
+
+export type CategoryPageContentQuery = (
+  { __typename?: 'Query' }
+  & { category?: Maybe<(
+    { __typename?: 'Category' }
+    & CategoryPageCategoryFragment
+  )>, posts: Array<{ __typename?: 'Category' } | { __typename?: 'Homepage' } | { __typename?: 'Person' } | (
+    { __typename?: 'Post' }
+    & PostListFieldsFragment
+  ) | { __typename?: 'Tag' }> }
+);
+
 export type HomepagePartsFragment = (
   { __typename?: 'Homepage' }
   & { parts: Array<Maybe<(
@@ -348,6 +373,15 @@ export const PostListFieldsFragmentDoc = gql`
   title
 }
     `;
+export const CategoryPageCategoryFragmentDoc = gql`
+    fragment CategoryPageCategory on Category {
+  _metadata {
+    path
+  }
+  title
+  description
+}
+    `;
 export const HomepagePartsFragmentDoc = gql`
     fragment HomepageParts on Homepage {
   parts {
@@ -419,6 +453,24 @@ export const PostPagePostFragmentDoc = gql`
   ...PostContent
 }
     ${PostContentFragmentDoc}`;
+export const CategoryPageContentDocument = gql`
+    query categoryPageContent($path: String!) {
+  category(path: $path) {
+    ...CategoryPageCategory
+  }
+  posts: entries(
+    filters: {contentType: {eq: "post"}, relations: {contains: {field: "category", path: $path}}}
+    orderBy: [{field: CREATED_AT, direction: DESC}]
+    limit: 100
+    offset: 0
+  ) {
+    ... on Post {
+      ...PostListFields
+    }
+  }
+}
+    ${CategoryPageCategoryFragmentDoc}
+${PostListFieldsFragmentDoc}`;
 export const HomepageContentDocument = gql`
     query homepageContent {
   homepage(path: "/index") {
@@ -453,6 +505,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    categoryPageContent(variables: CategoryPageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CategoryPageContentQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CategoryPageContentQuery>(CategoryPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'categoryPageContent');
+    },
     homepageContent(variables?: HomepageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<HomepageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<HomepageContentQuery>(HomepageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'homepageContent');
     },
