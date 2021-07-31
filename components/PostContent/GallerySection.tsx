@@ -27,7 +27,8 @@ export const GallerySection = ({ content }: GallerySectionProps) => {
         loop
         navigation
         pagination={{ clickable: true }}
-        spaceBetween={20}
+        slidesPerView="auto"
+        spaceBetween={10}
       >
         {content.images.map((image, i) => (
           <SwiperSlide key={i}>

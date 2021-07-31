@@ -68,7 +68,7 @@ export const FeatureImage = styled.div`
   margin: 7vw 8vw;
   position: relative;
 
-  @media screen and (min-width: 70 * $font-size-base) {
+  @media screen and (min-width: ${props => 70 * props.theme.sizeBase}px) {
     margin-top: 8rem;
   }
 

@@ -206,7 +206,7 @@ export const Carousel = styled.div`
 
   .swiper-button-prev,
   .swiper-button-next {
-    color: ${props => props.theme.clrForegroundL3};
+    color: ${props => props.theme.clrPrimaryL4};
   }
 
   .swiper-button-prev {
@@ -216,14 +216,26 @@ export const Carousel = styled.div`
   .swiper-button-next {
     right: ${props => props.theme.sizeBase * 3}px;
   }
+
+  .swiper-slide {
+    transition: opacity 0.3s ease;
+    float: left;
+    height: 100%;
+    width: auto !important;
+    opacity: 0.3;
+  }
+  
+  .swiper-slide-active {
+    opacity: 1;
+  }
 `
 
 export const CarouselSlide = styled.div`
-  height: 500px;
+  height: 400px;
   text-align: center;
 
   img {
-    max-height: 500px !important;
+    max-height: 400px !important;
   }
 `
 

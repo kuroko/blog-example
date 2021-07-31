@@ -65,6 +65,7 @@ export const PostHeader = ({ post }: PostHeaderProps) => {
             src={post.coverImage.publicUrl}
             width={post.coverImage.metadata?.width || 0}
             height={post.coverImage.metadata?.height || 0}
+            alt={`${post.title} Cover Image`}
           />
         </FeatureImage>
       )}
