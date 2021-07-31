@@ -192,6 +192,41 @@ export const Wrapper = styled.div`
   // TODO: More https://github.com/seeruk/elliotdwright.com/blob/master/src/scss/components/PostContent.module.scss
 `
 
+export const Carousel = styled.div`
+  padding-bottom: 50px;
+  
+  .swiper-pagination-bullet {
+    background: ${props => props.theme.clrForegroundL4};
+    opacity: 1;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background: ${props => props.theme.clrPrimaryL4};
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: ${props => props.theme.clrForegroundL3};
+  }
+
+  .swiper-button-prev {
+    left: ${props => props.theme.sizeBase * 3}px;
+  }
+
+  .swiper-button-next {
+    right: ${props => props.theme.sizeBase * 3}px;
+  }
+`
+
+export const CarouselSlide = styled.div`
+  height: 500px;
+  text-align: center;
+
+  img {
+    max-height: 500px !important;
+  }
+`
+
 export const GalleryImage = styled.div`
   text-align: center;
   
