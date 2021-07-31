@@ -4,11 +4,11 @@ import Image from "next/image"
 import Link from "next/link"
 import readingTime from "reading-time"
 
-import { PostFieldsFragment } from "generated/graphql"
 import { Container, FeatureImage, Meta, MetaItem, Title } from "components/PostHeader/styles"
+import { PostContentFragment, PostPagePostFragment } from "generated/graphql"
 
 export type PostHeaderProps = {
-  post: PostFieldsFragment
+  post: PostPagePostFragment
 }
 
 export const PostHeader = ({ post }: PostHeaderProps) => {
@@ -72,7 +72,7 @@ export const PostHeader = ({ post }: PostHeaderProps) => {
   )
 }
 
-const getTextContent = (post: PostFieldsFragment) => post.content.reduce((agg, block) => {
+const getTextContent = (post: PostContentFragment) => post.content.reduce((agg, block) => {
   if (block?.__typename == "Post_Content_MarkdownSection") {
     return `${agg} ${block.markdown}` // Does this work?
   }

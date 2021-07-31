@@ -242,7 +242,64 @@ export type Tag = {
 };
 
 
-export type PostFieldsFragment = (
+export type PostListFieldsFragment = (
+  { __typename?: 'Post' }
+  & Pick<Post, 'title'>
+  & { _metadata?: Maybe<(
+    { __typename?: 'K4oEntryMetadata' }
+    & Pick<K4oEntryMetadata, 'path' | 'createdAt'>
+  )> }
+);
+
+export type HomepagePartsFragment = (
+  { __typename?: 'Homepage' }
+  & { parts: Array<Maybe<(
+    { __typename: 'Homepage_Parts_PostsListSection' }
+    & Pick<Homepage_Parts_PostsListSection, 'title'>
+  ) | (
+    { __typename: 'Homepage_Parts_TextSection' }
+    & Pick<Homepage_Parts_TextSection, 'title' | 'text'>
+  )>> }
+);
+
+export type HomepageContentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomepageContentQuery = (
+  { __typename?: 'Query' }
+  & { homepage?: Maybe<(
+    { __typename?: 'Homepage' }
+    & Pick<Homepage, 'intro'>
+    & HomepagePartsFragment
+  )>, posts: Array<{ __typename?: 'Category' } | { __typename?: 'Homepage' } | { __typename?: 'Person' } | (
+    { __typename?: 'Post' }
+    & PostListFieldsFragment
+  ) | { __typename?: 'Tag' }> }
+);
+
+export type PostContentFragment = (
+  { __typename?: 'Post' }
+  & { content: Array<Maybe<(
+    { __typename: 'Post_Content_MarkdownSection' }
+    & Pick<Post_Content_MarkdownSection, 'markdown'>
+  ) | (
+    { __typename: 'Post_Content_GallerySection' }
+    & { items: Array<Maybe<(
+      { __typename?: 'Post_Content_GallerySection_Items' }
+      & Pick<Post_Content_GallerySection_Items, 'caption'>
+      & { image: (
+        { __typename?: 'K4oAsset' }
+        & Pick<K4oAsset, 'publicUrl'>
+        & { metadata?: Maybe<(
+          { __typename?: 'K4oAssetImageMetadata' }
+          & Pick<K4oAssetImageMetadata, 'width' | 'height'>
+        )> }
+      ) }
+    )>> }
+  )>> }
+);
+
+export type PostPagePostFragment = (
   { __typename?: 'Post' }
   & Pick<Post, 'title'>
   & { _metadata?: Maybe<(
@@ -265,41 +322,72 @@ export type PostFieldsFragment = (
       { __typename?: 'K4oAssetImageMetadata' }
       & Pick<K4oAssetImageMetadata, 'width' | 'height'>
     )> }
-  ), content: Array<Maybe<(
-    { __typename: 'Post_Content_MarkdownSection' }
-    & Pick<Post_Content_MarkdownSection, 'markdown'>
-  ) | (
-    { __typename: 'Post_Content_GallerySection' }
-    & { items: Array<Maybe<(
-      { __typename?: 'Post_Content_GallerySection_Items' }
-      & Pick<Post_Content_GallerySection_Items, 'caption'>
-      & { image: (
-        { __typename?: 'K4oAsset' }
-        & Pick<K4oAsset, 'publicUrl'>
-        & { metadata?: Maybe<(
-          { __typename?: 'K4oAssetImageMetadata' }
-          & Pick<K4oAssetImageMetadata, 'width' | 'height'>
-        )> }
-      ) }
-    )>> }
-  )>> }
+  ) }
+  & PostContentFragment
 );
 
-export type GetPostByPathQueryVariables = Exact<{
+export type PostPageContentQueryVariables = Exact<{
   path: Scalars['String'];
 }>;
 
 
-export type GetPostByPathQuery = (
+export type PostPageContentQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & PostFieldsFragment
+    & PostPagePostFragment
   )> }
 );
 
-export const PostFieldsFragmentDoc = gql`
-    fragment PostFields on Post {
+export const PostListFieldsFragmentDoc = gql`
+    fragment PostListFields on Post {
+  _metadata {
+    path
+    createdAt
+  }
+  title
+}
+    `;
+export const HomepagePartsFragmentDoc = gql`
+    fragment HomepageParts on Homepage {
+  parts {
+    __typename
+    ... on Homepage_Parts_PostsListSection {
+      title
+    }
+    ... on Homepage_Parts_TextSection {
+      title
+      text
+    }
+  }
+}
+    `;
+export const PostContentFragmentDoc = gql`
+    fragment PostContent on Post {
+  content {
+    __typename
+    ... on Post_Content_MarkdownSection {
+      markdown
+    }
+    ... on Post_Content_GallerySection {
+      items {
+        image {
+          publicUrl
+          metadata {
+            ... on K4oAssetImageMetadata {
+              width
+              height
+            }
+          }
+        }
+        caption
+      }
+    }
+  }
+}
+    `;
+export const PostPagePostFragmentDoc = gql`
+    fragment PostPagePost on Post {
   _metadata {
     createdAt
     updatedAt
@@ -328,35 +416,35 @@ export const PostFieldsFragmentDoc = gql`
       }
     }
   }
-  content {
-    __typename
-    ... on Post_Content_MarkdownSection {
-      markdown
-    }
-    ... on Post_Content_GallerySection {
-      items {
-        image {
-          publicUrl
-          metadata {
-            ... on K4oAssetImageMetadata {
-              width
-              height
-            }
-          }
-        }
-        caption
-      }
+  ...PostContent
+}
+    ${PostContentFragmentDoc}`;
+export const HomepageContentDocument = gql`
+    query homepageContent {
+  homepage(path: "/index") {
+    intro
+    ...HomepageParts
+  }
+  posts: entries(
+    filters: {contentType: {eq: "post"}}
+    orderBy: [{field: CREATED_AT, direction: DESC}]
+    limit: 100
+    offset: 0
+  ) {
+    ... on Post {
+      ...PostListFields
     }
   }
 }
-    `;
-export const GetPostByPathDocument = gql`
-    query getPostByPath($path: String!) {
+    ${HomepagePartsFragmentDoc}
+${PostListFieldsFragmentDoc}`;
+export const PostPageContentDocument = gql`
+    query postPageContent($path: String!) {
   post(path: $path) {
-    ...PostFields
+    ...PostPagePost
   }
 }
-    ${PostFieldsFragmentDoc}`;
+    ${PostPagePostFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -365,8 +453,11 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getPostByPath(variables: GetPostByPathQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetPostByPathQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetPostByPathQuery>(GetPostByPathDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPostByPath');
+    homepageContent(variables?: HomepageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<HomepageContentQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<HomepageContentQuery>(HomepageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'homepageContent');
+    },
+    postPageContent(variables: PostPageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PostPageContentQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PostPageContentQuery>(PostPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'postPageContent');
     }
   };
 }

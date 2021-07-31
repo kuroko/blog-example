@@ -1,7 +1,7 @@
 # This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
-    query: Query
+  query: Query
 }
 
 union Entry = Category | Homepage | Person | Post | Tag
@@ -19,166 +19,166 @@ union Post_Content = Post_Content_GallerySection | Post_Content_MarkdownSection
 union Post_Tags = Tag
 
 type Category {
-    _metadata: K4oEntryMetadata
-    description: String!
-    title: String!
+  _metadata: K4oEntryMetadata
+  description: String!
+  title: String!
 }
 
 type Homepage {
-    _metadata: K4oEntryMetadata
-    intro: String!
-    parts: [Homepage_Parts]!
+  _metadata: K4oEntryMetadata
+  intro: String!
+  parts: [Homepage_Parts]!
 }
 
 type Homepage_Parts_PostsListSection {
-    _metadata: K4oEntryMetadata
-    title: String!
+  _metadata: K4oEntryMetadata
+  title: String!
 }
 
 type Homepage_Parts_TextSection {
-    _metadata: K4oEntryMetadata
-    text: String!
-    title: String!
+  _metadata: K4oEntryMetadata
+  text: String!
+  title: String!
 }
 
 type K4oAsset {
-    assetUuid: UUID!
-    createdAt: Date!
-    filePath: String!
-    metadata: K4oAssetMetadata
-    mimeType: String!
-    name: String!
-    path: String!
-    publicUrl: String!
-    updatedAt: Date!
+  assetUuid: UUID!
+  createdAt: Date!
+  filePath: String!
+  metadata: K4oAssetMetadata
+  mimeType: String!
+  name: String!
+  path: String!
+  publicUrl: String!
+  updatedAt: Date!
 }
 
 type K4oAssetImageMetadata {
-    height: Int!
-    width: Int!
+  height: Int!
+  width: Int!
 }
 
 type K4oEntryMetadata {
-    contentTypeUuid: UUID!
-    createdAt: Date!
-    entryUuid: UUID!
-    name: String!
-    path: String!
-    updatedAt: Date!
+  contentTypeUuid: UUID!
+  createdAt: Date!
+  entryUuid: UUID!
+  name: String!
+  path: String!
+  updatedAt: Date!
 }
 
 type Person {
-    _metadata: K4oEntryMetadata
-    bio: String!
-    firstName: String!
-    lastName: String!
+  _metadata: K4oEntryMetadata
+  bio: String!
+  firstName: String!
+  lastName: String!
 }
 
 type Post {
-    _metadata: K4oEntryMetadata
-    authors: [Post_Authors]!
-    category: Post_Category!
-    content: [Post_Content]!
-    coverImage: K4oAsset!
-    tags: [Post_Tags]!
-    title: String!
+  _metadata: K4oEntryMetadata
+  authors: [Post_Authors]!
+  category: Post_Category!
+  content: [Post_Content]!
+  coverImage: K4oAsset!
+  tags: [Post_Tags]!
+  title: String!
 }
 
 type Post_Content_GallerySection {
-    _metadata: K4oEntryMetadata
-    items: [Post_Content_GallerySection_Items]!
+  _metadata: K4oEntryMetadata
+  items: [Post_Content_GallerySection_Items]!
 }
 
 type Post_Content_GallerySection_Items {
-    caption: String!
-    image: K4oAsset!
+  caption: String!
+  image: K4oAsset!
 }
 
 type Post_Content_MarkdownSection {
-    _metadata: K4oEntryMetadata
-    markdown: String!
+  _metadata: K4oEntryMetadata
+  markdown: String!
 }
 
 type Query {
-    category(path: String!): Category
-    entries(filters: K4oEntriesFilters, limit: Int!, offset: Int!, orderBy: [K4oEntriesOrder!]): [Entry!]!
-    homepage(path: String!): Homepage
-    person(path: String!): Person
-    post(path: String!): Post
-    tag(path: String!): Tag
+  category(path: String!): Category
+  entries(filters: K4oEntriesFilters, limit: Int!, offset: Int!, orderBy: [K4oEntriesOrder!]): [Entry!]!
+  homepage(path: String!): Homepage
+  person(path: String!): Person
+  post(path: String!): Post
+  tag(path: String!): Tag
 }
 
 type Tag {
-    _metadata: K4oEntryMetadata
-    name: String!
+  _metadata: K4oEntryMetadata
+  name: String!
 }
 
 enum K4oEntriesOrderField {
-    CREATED_AT
-    NAME
-    PATH
-    UPDATED_AT
+  CREATED_AT
+  NAME
+  PATH
+  UPDATED_AT
 }
 
 enum K4oOrderDirection {
-    ASC
-    DESC
+  ASC
+  DESC
 }
 
 input K4oEntriesFilters {
-    and: [K4oEntriesFilters!]
-    contentType: K4oStringFilters
-    contentTypeUuid: K4oUuidFilters
-    createdAt: K4oTimeFilters
-    entryUuid: K4oUuidFilters
-    name: K4oStringFilters
-    or: [K4oEntriesFilters!]
-    path: K4oPathFilters
-    relations: K4oEntriesRelationsFilters
-    updatedAt: K4oTimeFilters
+  and: [K4oEntriesFilters!]
+  contentType: K4oStringFilters
+  contentTypeUuid: K4oUuidFilters
+  createdAt: K4oTimeFilters
+  entryUuid: K4oUuidFilters
+  name: K4oStringFilters
+  or: [K4oEntriesFilters!]
+  path: K4oPathFilters
+  relations: K4oEntriesRelationsFilters
+  updatedAt: K4oTimeFilters
 }
 
 input K4oEntriesOrder {
-    direction: K4oOrderDirection
-    field: K4oEntriesOrderField
+  direction: K4oOrderDirection
+  field: K4oEntriesOrderField
 }
 
 input K4oEntriesRelationsFilters {
-    contains: K4oEntriesRelationsFiltersContains
+  contains: K4oEntriesRelationsFiltersContains
 }
 
 input K4oEntriesRelationsFiltersContains {
-    field: String
-    path: String!
+  field: String
+  path: String!
 }
 
 input K4oPathFilters {
-    childrenOf: String
-    descendantsOf: String
-    eq: String
-    ne: String
+  childrenOf: String
+  descendantsOf: String
+  eq: String
+  ne: String
 }
 
 input K4oStringFilters {
-    contains: String
-    endsWith: String
-    eq: String
-    ne: String
-    startsWith: String
+  contains: String
+  endsWith: String
+  eq: String
+  ne: String
+  startsWith: String
 }
 
 input K4oTimeFilters {
-    dateEq: Date
-    dateNe: Date
-    gt: Date
-    gte: Date
-    lt: Date
-    lte: Date
+  dateEq: Date
+  dateNe: Date
+  gt: Date
+  gte: Date
+  lt: Date
+  lte: Date
 }
 
 input K4oUuidFilters {
-    eq: UUID
-    ne: UUID
+  eq: UUID
+  ne: UUID
 }
 
 
