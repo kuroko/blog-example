@@ -1,5 +1,5 @@
 import React from "react"
-import { GetStaticPaths, GetStaticProps } from "next"
+import { GetServerSideProps } from "next"
 import Head from "next/head"
 
 import { Jumbotron } from "components/Jumbotron"
@@ -29,7 +29,7 @@ export default function Category({ category, posts }: CategoryProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps<CategoryProps, CategoryQuery> = async context => {
+export const getServerSideProps: GetServerSideProps<CategoryProps, CategoryQuery> = async context => {
   const client = getSdk(graphqlClient)
   const resp = await client.categoryPageContent({ path: `/categories/${context.params?.path.join("/")}` })
 
@@ -42,23 +42,5 @@ export const getStaticProps: GetStaticProps<CategoryProps, CategoryQuery> = asyn
       category: resp.category,
       posts: resp.posts as Maybe<PostListFieldsFragment[]>,
     },
-    revalidate: 15,
-  }
-}
-
-export const getStaticPaths: GetStaticPaths<CategoryQuery> = async () => {
-  const client = getSdk(graphqlClient)
-  const resp = await client.categoryPaths()
-
-  return {
-    paths: resp.entries.map(entry => {
-      const category = entry as { _metadata: { path: string } }
-      return {
-        params: {
-          path: category._metadata.path.split("/").filter(el => !!el && el !== "categories"),
-        },
-      }
-    }),
-    fallback: false,
   }
 }

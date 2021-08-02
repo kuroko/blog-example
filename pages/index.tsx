@@ -1,5 +1,5 @@
 import React from "react"
-import { GetStaticProps } from "next"
+import { GetServerSideProps } from "next"
 import Head from "next/head"
 
 import { HomepageParts } from "components/HomepageParts"
@@ -26,7 +26,7 @@ export default function Home({ homepage, posts }: HomeProps) {
 }
 
 
-export const getStaticProps: GetStaticProps<HomeProps> = async context => {
+export const getServerSideProps: GetServerSideProps<HomeProps> = async context => {
   const client = getSdk(graphqlClient)
   const resp = await client.homepageContent()
 
@@ -39,6 +39,5 @@ export const getStaticProps: GetStaticProps<HomeProps> = async context => {
       homepage: resp.homepage,
       posts: resp.posts as Maybe<PostListFieldsFragment[]>, // TODO: Annoying... better way?
     },
-    revalidate: 15,
   }
 }

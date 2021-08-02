@@ -1,5 +1,5 @@
 import React from "react"
-import { GetStaticPaths, GetStaticProps } from "next"
+import { GetServerSideProps } from "next"
 import Head from "next/head"
 
 import { graphqlClient } from "constants/graphqlClient"
@@ -28,7 +28,7 @@ export default function Post(props: PostProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps<PostProps, PostQuery> = async context => {
+export const getServerSideProps: GetServerSideProps<PostProps, PostQuery> = async context => {
   const client = getSdk(graphqlClient)
   const resp = await client.postPageContent({ path: `/posts/${context.params?.path.join("/")}` })
 
@@ -40,23 +40,5 @@ export const getStaticProps: GetStaticProps<PostProps, PostQuery> = async contex
     props: {
       post: resp.post,
     },
-    revalidate: 15,
-  }
-}
-
-export const getStaticPaths: GetStaticPaths<PostQuery> = async () => {
-  const client = getSdk(graphqlClient)
-  const resp = await client.postPaths()
-
-  return {
-    paths: resp.entries.map(entry => {
-      const post = entry as { _metadata: { path: string } }
-      return {
-        params: {
-          path: post._metadata.path.split("/").filter(el => !!el && el !== "posts")
-        },
-      }
-    }),
-    fallback: false,
   }
 }
