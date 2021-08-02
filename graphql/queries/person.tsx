@@ -42,3 +42,22 @@ export const personPagePersonQuery = gql`
   ${personPagePersonFragment}
   ${postListFieldsFragment}
 `
+
+
+export const personPathsQuery = gql`
+  query personPaths {
+    entries(
+      filters: {
+        contentType: { eq: "person" }
+      }
+      limit: 100
+      offset: 0
+    ) {
+      ...on Person {
+        _metadata {
+          path
+        }
+      }
+    }
+  }
+`

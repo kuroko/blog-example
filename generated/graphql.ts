@@ -276,6 +276,20 @@ export type CategoryPageContentQuery = (
   ) | { __typename?: 'Tag' }> }
 );
 
+export type CategoryPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoryPathsQuery = (
+  { __typename?: 'Query' }
+  & { entries: Array<(
+    { __typename?: 'Category' }
+    & { _metadata?: Maybe<(
+      { __typename?: 'K4oEntryMetadata' }
+      & Pick<K4oEntryMetadata, 'path'>
+    )> }
+  ) | { __typename?: 'Homepage' } | { __typename?: 'Person' } | { __typename?: 'Post' } | { __typename?: 'Tag' }> }
+);
+
 export type HomepagePartsFragment = (
   { __typename?: 'Homepage' }
   & { parts: Array<Maybe<(
@@ -325,6 +339,20 @@ export type PersonPagePersonQuery = (
     { __typename?: 'Post' }
     & PostListFieldsFragment
   ) | { __typename?: 'Tag' }> }
+);
+
+export type PersonPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PersonPathsQuery = (
+  { __typename?: 'Query' }
+  & { entries: Array<{ __typename?: 'Category' } | { __typename?: 'Homepage' } | (
+    { __typename?: 'Person' }
+    & { _metadata?: Maybe<(
+      { __typename?: 'K4oEntryMetadata' }
+      & Pick<K4oEntryMetadata, 'path'>
+    )> }
+  ) | { __typename?: 'Post' } | { __typename?: 'Tag' }> }
 );
 
 export type PostContentFragment = (
@@ -390,6 +418,20 @@ export type PostPageContentQuery = (
     { __typename?: 'Post' }
     & PostPagePostFragment
   )> }
+);
+
+export type PostPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostPathsQuery = (
+  { __typename?: 'Query' }
+  & { entries: Array<{ __typename?: 'Category' } | { __typename?: 'Homepage' } | { __typename?: 'Person' } | (
+    { __typename?: 'Post' }
+    & { _metadata?: Maybe<(
+      { __typename?: 'K4oEntryMetadata' }
+      & Pick<K4oEntryMetadata, 'path'>
+    )> }
+  ) | { __typename?: 'Tag' }> }
 );
 
 export const PostListFieldsFragmentDoc = gql`
@@ -512,6 +554,17 @@ export const CategoryPageContentDocument = gql`
 }
     ${CategoryPageCategoryFragmentDoc}
 ${PostListFieldsFragmentDoc}`;
+export const CategoryPathsDocument = gql`
+    query categoryPaths {
+  entries(filters: {contentType: {eq: "category"}}, limit: 100, offset: 0) {
+    ... on Category {
+      _metadata {
+        path
+      }
+    }
+  }
+}
+    `;
 export const HomepageContentDocument = gql`
     query homepageContent {
   homepage(path: "/index") {
@@ -549,6 +602,17 @@ export const PersonPagePersonDocument = gql`
 }
     ${PersonPagePersonFragmentDoc}
 ${PostListFieldsFragmentDoc}`;
+export const PersonPathsDocument = gql`
+    query personPaths {
+  entries(filters: {contentType: {eq: "person"}}, limit: 100, offset: 0) {
+    ... on Person {
+      _metadata {
+        path
+      }
+    }
+  }
+}
+    `;
 export const PostPageContentDocument = gql`
     query postPageContent($path: String!) {
   post(path: $path) {
@@ -556,6 +620,17 @@ export const PostPageContentDocument = gql`
   }
 }
     ${PostPagePostFragmentDoc}`;
+export const PostPathsDocument = gql`
+    query postPaths {
+  entries(filters: {contentType: {eq: "post"}}, limit: 100, offset: 0) {
+    ... on Post {
+      _metadata {
+        path
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -567,14 +642,23 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     categoryPageContent(variables: CategoryPageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CategoryPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<CategoryPageContentQuery>(CategoryPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'categoryPageContent');
     },
+    categoryPaths(variables?: CategoryPathsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CategoryPathsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CategoryPathsQuery>(CategoryPathsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'categoryPaths');
+    },
     homepageContent(variables?: HomepageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<HomepageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<HomepageContentQuery>(HomepageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'homepageContent');
     },
     personPagePerson(variables: PersonPagePersonQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PersonPagePersonQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PersonPagePersonQuery>(PersonPagePersonDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'personPagePerson');
     },
+    personPaths(variables?: PersonPathsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PersonPathsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PersonPathsQuery>(PersonPathsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'personPaths');
+    },
     postPageContent(variables: PostPageContentQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PostPageContentQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PostPageContentQuery>(PostPageContentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'postPageContent');
+    },
+    postPaths(variables?: PostPathsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PostPathsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PostPathsQuery>(PostPathsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'postPaths');
     }
   };
 }

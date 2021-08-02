@@ -80,3 +80,21 @@ export const postPageContentQuery = gql`
   ${postContentFragment}
   ${postPagePostFragment}
 `
+
+export const postPathsQuery = gql`
+  query postPaths {
+    entries(
+      filters: {
+        contentType: { eq: "post" }
+      }
+      limit: 100
+      offset: 0
+    ) {
+      ...on Post {
+        _metadata {
+          path
+        }
+      }
+    }
+  }
+`

@@ -1,5 +1,5 @@
 import React from "react"
-import { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import { GetStaticProps } from "next"
 import Head from "next/head"
 
 import { HomepageParts } from "components/HomepageParts"
@@ -12,7 +12,7 @@ export type HomeProps = {
   posts?: Maybe<PostListFieldsFragment[]>
 }
 
-export default function Home({ homepage, posts }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home({ homepage, posts }: HomeProps) {
   return (
     <>
       <Head>
@@ -26,7 +26,7 @@ export default function Home({ homepage, posts }: InferGetServerSidePropsType<ty
 }
 
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async context => {
+export const getStaticProps: GetStaticProps<HomeProps> = async context => {
   const client = getSdk(graphqlClient)
   const resp = await client.homepageContent()
 
@@ -39,5 +39,6 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async context =
       homepage: resp.homepage,
       posts: resp.posts as Maybe<PostListFieldsFragment[]>, // TODO: Annoying... better way?
     },
+    revalidate: 15,
   }
 }

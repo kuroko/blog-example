@@ -1,11 +1,12 @@
 import React from "react"
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
 
 import { Jumbotron } from "components/Jumbotron"
 import { PostsList } from "components/PostsList"
 import { graphqlClient } from "constants/graphqlClient"
-import { PersonPagePersonFragment, getSdk, Maybe, PostListFieldsFragment } from "generated/graphql"
+import { getSdk, Maybe, PersonPagePersonFragment, PostListFieldsFragment } from "generated/graphql"
+import { CategoryQuery } from "pages/categories/[...path]"
 
 export type PersonQuery = {
   path: string[]
@@ -29,7 +30,7 @@ export default function Person({ person, posts }: PersonProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<PersonProps, PersonQuery> = async context => {
+export const getStaticProps: GetStaticProps<PersonProps, PersonQuery> = async context => {
   const client = getSdk(graphqlClient)
   const resp = await client.personPagePerson({ path: `/people/${context.params?.path.join("/")}` })
 
@@ -42,5 +43,23 @@ export const getServerSideProps: GetServerSideProps<PersonProps, PersonQuery> = 
       person: resp.person,
       posts: resp.posts as Maybe<PostListFieldsFragment[]>,
     },
+    revalidate: 15,
+  }
+}
+
+export const getStaticPaths: GetStaticPaths<CategoryQuery> = async () => {
+  const client = getSdk(graphqlClient)
+  const resp = await client.personPaths()
+
+  return {
+    paths: resp.entries.map(entry => {
+      const person = entry as { _metadata: { path: string } }
+      return {
+        params: {
+          path: person._metadata.path.split("/").filter(el => !!el && el !== "people"),
+        },
+      }
+    }),
+    fallback: false,
   }
 }

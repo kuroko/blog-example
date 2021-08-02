@@ -41,3 +41,21 @@ export const categoryPageContentQuery = gql`
   ${categoryPageCategoryFragment}
   ${postListFieldsFragment}
 `
+
+export const categoryPathsQuery = gql`
+  query categoryPaths {
+    entries(
+      filters: {
+        contentType: { eq: "category" }
+      }
+      limit: 100
+      offset: 0
+    ) {
+      ...on Category {
+        _metadata {
+          path
+        }
+      }
+    }
+  }
+`
